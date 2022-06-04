@@ -64,8 +64,19 @@ def filter_out_personal_info(plans: DataFrame) -> DataFrame:
     See `get_watched_plans`.
     """
 
-    safe_plans = plans[['课程号', '课程名', '考试序号', '考试时间', '考试须知查询', '通知单类型']]
-    return safe_plans.drop_duplicates().sort_values(by='考试时间', axis='index')
+    columns: Final = ['课程号', '课程名', '考试序号', '考试时间', '考试须知查询', '通知单类型']
+    assert columns[-1] == '通知单类型'
+
+    safe_plans = plans[columns]
+    unique_plans = safe_plans.drop_duplicates()
+
+    merged_plans = unique_plans.groupby(
+        columns[:-1], dropna=False
+    ).aggregate({
+        '通知单类型': '／'.join
+    }).reset_index()
+
+    return merged_plans.sort_values(by='考试时间', axis='index')
 
 
 def one_plan_to_markdown(plan: Series) -> str:
