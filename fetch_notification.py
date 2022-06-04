@@ -3,6 +3,7 @@ import logging
 import re
 from io import BytesIO
 from urllib.parse import urljoin
+from datetime import datetime
 
 from requests import get as fetch
 from bs4 import BeautifulSoup
@@ -80,11 +81,14 @@ def filter_out_personal_info(plans: DataFrame) -> DataFrame:
 
 
 def one_plan_to_markdown(plan: Series) -> str:
+    raw_time: str = plan['考试时间']
+    time: str = raw_time.replace('(', '（').replace(')', '）')
+
     title: str = plan['课程名']
     if plan['通知单类型'] != '正常':
         title += f"（{plan['通知单类型']}）"
-
-    time: str = plan['考试时间'].replace('(', '（').replace(')', '）')
+    if datetime.fromisoformat(raw_time.split()[0]) < datetime.now():
+        title = '✓ ' + title
 
     raw_remark = plan['考试须知查询']
     remark: Optional[str] = None
