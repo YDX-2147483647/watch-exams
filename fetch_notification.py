@@ -84,22 +84,22 @@ def one_plan_to_markdown(plan: Series) -> str:
     raw_time: str = plan['考试时间']
     time: str = raw_time.replace('(', '（').replace(')', '）')
 
-    title: str = plan['课程名']
+    title: str = f"**{plan['课程名']}**"
     if plan['通知单类型'] != '正常':
         title += f"（{plan['通知单类型']}）"
     if datetime.fromisoformat(raw_time.split()[0]) < datetime.now():
         title = '✓ ' + title
 
     raw_remark = plan['考试须知查询']
-    remark: Optional[str] = None
+    remark: list[str] = []
     if type(raw_remark) == str:
-        remark = raw_remark
+        remark = [f"> {line}" for line in raw_remark.split('\n')]
     elif type(raw_remark) == float and isnan(raw_remark):
         pass
     else:
         logging.error(f"备注无法识别：{raw_remark}。")
 
-    return '- ' + '\n\n  '.join(row for row in [title, time, remark] if row)
+    return '- ' + '\n\n  '.join(row for row in [title, time, '\n  >\n  '.join(remark)] if row)
 
 
 def all_plans_to_markdown(plans: DataFrame) -> str:
