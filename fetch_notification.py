@@ -83,7 +83,7 @@ def filter_out_personal_info(plans: DataFrame) -> DataFrame:
 def one_plan_to_markdown(plan: Series) -> str:
     raw_time: str = plan['考试时间']
 
-    if datetime.fromisoformat(raw_time.split()[0]) < datetime.now():
+    if datetime.fromisoformat(raw_time.split()[0]).date() < datetime.now().date():
         return f"- ✓ {plan['课程名']}"
 
     else:
