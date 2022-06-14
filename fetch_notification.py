@@ -82,29 +82,32 @@ def filter_out_personal_info(plans: DataFrame) -> DataFrame:
 
 def one_plan_to_markdown(plan: Series) -> str:
     raw_time: str = plan['考试时间']
-    time: str = raw_time.replace('(', '（').replace(')', '）')
 
-    title: str = f"**{plan['课程名']}**"
-    if plan['通知单类型'] != '正常':
-        title += f"（{plan['通知单类型']}）"
     if datetime.fromisoformat(raw_time.split()[0]) < datetime.now():
-        title = '✓ ' + title
+        return f"- ✓ {plan['课程名']}"
 
-    raw_remark = plan['考试须知查询']
-    remark: list[str] = []
-    if type(raw_remark) == str:
-        remark = [f"> {line}" for line in raw_remark.split('\n')]
-    elif type(raw_remark) == float and isnan(raw_remark):
-        pass
     else:
-        logging.error(f"备注无法识别：{raw_remark}。")
+        title: str = f"**{plan['课程名']}**"
+        if plan['通知单类型'] != '正常':
+            title += f"（{plan['通知单类型']}）"
 
-    return '\n\n'.join(filter(lambda x: bool(x), [
-        f"- {title}",
-        f"  {time}",
-        '\n>\n'.join(remark)
-        # remark 本应是 list item 的内容，然而钉钉手机端不支持（会导致后续加粗失效），只好去除缩进了。
-    ]))
+        time: str = raw_time.replace('(', '（').replace(')', '）')
+
+        raw_remark = plan['考试须知查询']
+        remark: list[str] = []
+        if type(raw_remark) == str:
+            remark = [f"> {line}" for line in raw_remark.split('\n')]
+        elif type(raw_remark) == float and isnan(raw_remark):
+            pass
+        else:
+            logging.error(f"备注无法识别：{raw_remark}。")
+
+        return '\n\n'.join(filter(lambda x: bool(x), [
+            f"- {title}",
+            f"  {time}",
+            '\n>\n'.join(remark)
+            # remark 本应是 list item 的内容，然而钉钉手机端不支持（会导致后续加粗失效），只好去除缩进了。
+        ]))
 
 
 def all_plans_to_markdown(plans: DataFrame) -> str:
