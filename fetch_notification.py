@@ -99,7 +99,12 @@ def one_plan_to_markdown(plan: Series) -> str:
     else:
         logging.error(f"备注无法识别：{raw_remark}。")
 
-    return '- ' + '\n\n  '.join(row for row in [title, time, '\n  >\n  '.join(remark)] if row)
+    return '\n\n'.join(filter(lambda x: bool(x), [
+        f"- {title}",
+        f"  {time}",
+        '\n>\n'.join(remark)
+        # remark 本应是 list item 的内容，然而钉钉手机端不支持（会导致后续加粗失效），只好去除缩进了。
+    ]))
 
 
 def all_plans_to_markdown(plans: DataFrame) -> str:
