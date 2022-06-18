@@ -82,15 +82,21 @@ def filter_out_personal_info(plans: DataFrame) -> DataFrame:
 
 def one_plan_to_markdown(plan: Series) -> str:
     raw_time: str = plan['考试时间']
+    is_completed = datetime.fromisoformat(
+        raw_time.split()[0]).date() < datetime.now().date()
 
-    if datetime.fromisoformat(raw_time.split()[0]).date() < datetime.now().date():
-        return f"- ✓ {plan['课程名']}"
-
+    title: str = f"{plan['课程名']}"
+    if is_completed:
+        title = f"✓ {title}"
     else:
-        title: str = f"**{plan['课程名']}**"
-        if plan['通知单类型'] != '正常':
-            title += f"（{plan['通知单类型']}）"
+        title = f"**{title}**"
 
+    if plan['通知单类型'] != '正常':
+        title += f"（{plan['通知单类型']}）"
+
+    if is_completed:
+        return f"- {title}"
+    else:
         time: str = raw_time.replace('(', '（').replace(')', '）')
 
         raw_remark = plan['考试须知查询']
