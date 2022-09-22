@@ -117,6 +117,9 @@ def one_plan_to_markdown(plan: Series) -> str:
 
 
 def all_plans_to_markdown(plans: DataFrame) -> str:
+    if plans.empty:
+        return ''
+
     messages = plans.apply(one_plan_to_markdown, axis='columns')
     return '\n\n'.join(messages)
 
