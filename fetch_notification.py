@@ -12,7 +12,7 @@ from pandas import read_excel
 from typing import Final, List, TypedDict, Optional
 from pandas import DataFrame, Series
 
-notification_url: Final = r'https://jxzx.bit.edu.cn/tzgg/0d9f2ceab73245098241554162b99978.htm'
+notification_url: Final = r'https://jxzx.bit.edu.cn/tzgg/9791433d77d044b6bed2e07c50b02319.htm'
 
 
 class PlanInfo(TypedDict):
@@ -29,11 +29,11 @@ def get_plan_info(**requests_args) -> PlanInfo:
     soup = BeautifulSoup(req.text, features='lxml')
     plan_element = soup.select(
         '.pageArticle > .Annex > ul > li > a:not([download])'
-    )[0]
+    )[1]
     url = urljoin(notification_url, plan_element.get('href'))
 
     filename = plan_element.get_text()
-    assert '学生考试安排' in filename
+    assert '学生' in filename and '考试安排' in filename
 
     note = re.search(r'(?<=（).+(?=）)', filename).group(0)
 
@@ -49,7 +49,7 @@ def get_plan_info(**requests_args) -> PlanInfo:
 def get_watched_plans(url: str, watches: List[str], **requests_args) -> DataFrame:
     """
     Returns:
-        The data with Index(['学号', '姓名', '课程号', '课程名', '考试序号', '考试时间', '考试须知查询', '通知单类型']).
+        The data with Index(['学号', '姓名', '课程号', '课程名', '考试序号', '考试时间', '其他说明', '通知单类型']).
     """
 
     res = fetch(url, **requests_args)
@@ -65,7 +65,7 @@ def filter_out_personal_info(plans: DataFrame) -> DataFrame:
     See `get_watched_plans`.
     """
 
-    columns: Final = ['课程号', '课程名', '考试时间', '考试须知查询', '通知单类型']
+    columns: Final = ['课程号', '课程名', '考试时间', '其他说明', '通知单类型']
     assert columns[-1] == '通知单类型'
 
     safe_plans = plans[columns]
@@ -99,7 +99,7 @@ def one_plan_to_markdown(plan: Series) -> str:
     else:
         time: str = raw_time.replace('(', '（').replace(')', '）')
 
-        raw_remark = plan['考试须知查询']
+        raw_remark = plan['其他说明']
         remark: list[str] = []
         if type(raw_remark) == str:
             remark = [f"> {line}" for line in raw_remark.split('\n')]
