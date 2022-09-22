@@ -46,7 +46,7 @@ def get_fixed_proxies() -> dict[str, str]:
 
 
 def has_changed(message: str) -> bool:
-    last_message = ''
+    last_message = '\n'
     try:
         with open(join(root, 'output/message.txt'), 'r', encoding='utf-8') as f:
             last_message = f.read()
