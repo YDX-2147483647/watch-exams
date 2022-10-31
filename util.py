@@ -1,14 +1,13 @@
-from os.path import dirname, realpath, join
-from typing import List, Final
+from os.path import dirname, join, realpath
+from typing import Final
+
+from pandas import read_csv
 
 root: Final = dirname(realpath(__file__))
 
 
-def load_watches() -> List[str]:
-    with open(join(root, 'config/watches.txt'), 'r', encoding='utf-8') as f:
-        watches: List[str] = [
-            s.strip()
-            for s in f.readlines()
-            if not s.startswith('#')
-        ]
-    return watches
+def load_watches() -> list[str]:
+    watches = read_csv(join(root, 'config/watches.csv'),
+                       encoding='utf-8', comment='#',)
+
+    return list(watches['学号'])

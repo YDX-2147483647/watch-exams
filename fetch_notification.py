@@ -30,12 +30,12 @@ def get_plan_info(**requests_args) -> PlanInfo:
     plan_element = soup.select(
         '.pageArticle > .Annex > ul > li > a:not([download])'
     )[1]
-    url = urljoin(notification_url, plan_element.get('href'))
+    url = urljoin(notification_url, plan_element.get('href'))  # type: ignore
 
     filename = plan_element.get_text()
     assert '学生' in filename and '考试安排' in filename
 
-    note = re.search(r'(?<=（).+(?=）)', filename).group(0)
+    note = re.search(r'(?<=（).+(?=）)', filename).group(0)  # type: ignore
 
     logging.info(f"Got the URL of “{note}”: {url} .")
 
@@ -57,7 +57,7 @@ def get_watched_plans(url: str, watches: List[str], **requests_args) -> DataFram
     data = read_excel(BytesIO(res.content))
     # 若直接`read_excel(url)`，无法设置代理
 
-    return data[data['姓名'].isin(watches)]
+    return data[data['学号'].isin(watches)]
 
 
 def filter_out_personal_info(plans: DataFrame) -> DataFrame:
@@ -121,7 +121,7 @@ def all_plans_to_markdown(plans: DataFrame) -> str:
         return ''
 
     messages = plans.apply(one_plan_to_markdown, axis='columns')
-    return '\n\n'.join(messages)
+    return '\n\n'.join(messages)  # type: ignore
 
 
 def fetch_notification_markdown(watches: List[str], **requests_args) -> str:

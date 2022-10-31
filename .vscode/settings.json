@@ -4,5 +4,6 @@
         "dtype",
         "isin",
         "lxml"
-    ]
+    ],
+    "python.analysis.typeCheckingMode": "basic"
 }
