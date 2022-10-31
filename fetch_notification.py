@@ -9,7 +9,7 @@ from requests import get as fetch
 from bs4 import BeautifulSoup
 from pandas import read_excel
 
-from typing import Final, List, TypedDict, Optional
+from typing import Final, TypedDict
 from pandas import DataFrame, Series
 
 notification_url: Final = r'https://jxzx.bit.edu.cn/tzgg/9791433d77d044b6bed2e07c50b02319.htm'
@@ -46,7 +46,7 @@ def get_plan_info(**requests_args) -> PlanInfo:
     )
 
 
-def get_watched_plans(url: str, watches: List[str], **requests_args) -> DataFrame:
+def get_watched_plans(url: str, watches: list[str], **requests_args) -> DataFrame:
     """
     Returns:
         The data with Index(['学号', '姓名', '课程号', '课程名', '考试序号', '考试时间', '其他说明', '通知单类型']).
@@ -124,7 +124,7 @@ def all_plans_to_markdown(plans: DataFrame) -> str:
     return '\n\n'.join(messages)  # type: ignore
 
 
-def fetch_notification_markdown(watches: List[str], **requests_args) -> str:
+def fetch_notification_markdown(watches: list[str], **requests_args) -> str:
     info = get_plan_info(**requests_args)
     plans = get_watched_plans(info['url'], watches, **requests_args)
     plans = filter_out_personal_info(plans)
