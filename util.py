@@ -8,6 +8,6 @@ root: Final = dirname(realpath(__file__))
 
 def load_watches() -> list[str]:
     watches = read_csv(join(root, 'config/watches.csv'),
-                       encoding='utf-8', comment='#',)
+                       encoding='utf-8', comment='#', dtype=str)
 
     return list(watches['学号'])
