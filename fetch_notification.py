@@ -54,7 +54,7 @@ def get_watched_plans(url: str, watches: list[str], **requests_args) -> DataFram
 
     res = fetch(url, **requests_args)
     res.raise_for_status()
-    data = read_excel(BytesIO(res.content))
+    data = read_excel(BytesIO(res.content), dtype={'学号': str})
     # 若直接`read_excel(url)`，无法设置代理
 
     return data[data['学号'].isin(watches)]
