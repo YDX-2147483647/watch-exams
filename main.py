@@ -59,6 +59,15 @@ def save(message: str) -> None:
     output_dir.mkdir(exist_ok=True)
     output_file = output_dir / 'message.txt'
 
+    # Backup the old
+    old_output_file = output_file.with_stem('message-old')
+    old_output_file.unlink(missing_ok=True)
+    try:
+        output_file.rename(old_output_file)
+    except FileNotFoundError:
+        pass
+
+    # Save the new
     with output_file.open('w', encoding='utf-8') as f:
         f.write(message)
     logging.info(
