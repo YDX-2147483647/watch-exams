@@ -50,9 +50,12 @@ def compare(message: str, old_message: str | None) -> str:
             case '  ':
                 result.append(line + tail)
             case '+ ':
-                head_line = re.sub(
-                    r'^([-#>\s]*)', r'\1<font color="#00FF00">', line)
-                result.append(f'{head_line}</font>{tail}')
+                if re.match(r'^([->\s]*)$', line):
+                    result.append(line + tail)
+                else:
+                    head_line = re.sub(
+                        r'^([-#>\s]*)', r'\1<font color="#00FF00">', line)
+                    result.append(f'{head_line}</font>{tail}')
             case '- ':
                 confusing = True
                 result.append(
