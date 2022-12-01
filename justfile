@@ -16,6 +16,10 @@ update *options:
 update-ding *options:
 	{{ python }} main.py --verbose --ding {{ options }}
 
+# Reset “message.txt” to the old
+undo:
+	cp output/message-old.txt output/message.txt
+
 # See what has changed in VS Code
 diff:
 	code --diff output/message-old.txt output/message.txt
