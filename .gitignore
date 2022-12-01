@@ -1,6 +1,6 @@
 /output/
-/env/
 /config/
+/.env
 
 
 # Created by https://www.toptal.com/developers/gitignore/api/python

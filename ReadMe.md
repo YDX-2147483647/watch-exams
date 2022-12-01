@@ -1,8 +1,25 @@
 # 监视“学生考试安排”
 
 ```shell
-> .\env\Scripts\activate # 如果用 Venv
+> just update
+INFO:root:Got the URL of “12.1更新”: https://jxzx.bit.edu.cn/docs/2022-12/64a5e551792842e2a305a62e56ee8bde.xlsx .
+（测试）我们班相关的“学生考试安排”如下。（12.1更新）
+
+- **复变函数与数理方程**
+
+  2022-12-05 18:30-20:30（星期一）
+
+> 考试说明查询地址：https://lexue.bit.edu.cn/course/view.php?id=11614
+
+……
+详情见[教学中心通知](https://jxzx.bit.edu.cn/tzgg/9791433d77d044b6bed2e07c50b02319.htm)。
+INFO:root:The message was saved to D:\DevelopProjects\Archive\2036\watch\output\message.txt.
+```
+
+```shell
+# ↓ 查看更多信息
 > python main.py --help
+> just --list
 ```
 
 ## 设置（`config/`）
