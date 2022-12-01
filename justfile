@@ -9,12 +9,12 @@ python := env_var_or_default('PYTHON', 'python')
     just --list
 
 # Update the message
-update:
-	{{ python }} main.py --verbose
+update *options:
+	{{ python }} main.py --verbose {{ options }}
 
 # Update the message and send to Ding
-update-ding:
-	{{ python }} main.py --verbose --ding
+update-ding *options:
+	{{ python }} main.py --verbose --ding {{ options }}
 
 # See what has changed in VS Code
 diff:
