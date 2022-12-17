@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "watch-exams"
+version = "0.1.0"
+description = "监视“学生考试安排”。"
+authors = ["Y.D.X. <73375426+YDX-2147483647@users.noreply.github.com>"]
+readme = "README.md"
+packages = [{include = "watch_exams"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+beautifulsoup4 = "^4.11.1"
+pandas = "^1.5.2"
+dingding = "^0.6.2"
+requests = "^2.28.1"
+
+
+[tool.poetry.group.dev.dependencies]
+autopep8 = "^2.0.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

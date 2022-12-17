@@ -1,7 +1,7 @@
 set dotenv-load
 set windows-shell := ["pwsh", "-NoLogo", "-Command"]
 
-python := env_var_or_default('PYTHON', 'python')
+python := env_var_or_default('PYTHON', 'poetry run python')
 
 
 # List available recipes
@@ -10,11 +10,11 @@ python := env_var_or_default('PYTHON', 'python')
 
 # Update the message
 update *options:
-	{{ python }} main.py --verbose {{ options }}
+	{{ python }} -m watch_exams --verbose {{ options }}
 
 # Update the message and send to Ding
 update-ding *options:
-	{{ python }} main.py --verbose --ding {{ options }}
+	{{ python }} -m watch_exams --verbose --ding {{ options }}
 
 # Reset “message.txt” to the old
 undo:

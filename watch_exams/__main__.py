@@ -5,8 +5,8 @@ from typing import Final
 # spell-checker: disable-next-line
 from urllib.request import getproxies as get_proxies
 
-from fetch_notification import fetch_notification_markdown
-from util import compare, ding, has_changed, load_watches
+from .fetch_notification import fetch_notification_markdown
+from .util import compare, ding, has_changed, load_watches
 
 
 def prepare_parser() -> ArgumentParser:
@@ -43,7 +43,7 @@ def get_fixed_proxies() -> dict[str, str]:
 
 def update_file(message: str, output_file: Path, old_output_file: Path) -> None:
     """备份并更新 message.txt"""
-    
+
     # Backup the old
     old_output_file.unlink(missing_ok=True)
     try:
@@ -66,7 +66,7 @@ if __name__ == '__main__':
 
     # 1. Prepare paths
 
-    root: Final = Path(__file__).parent
+    root: Final = Path.cwd()
     output_dir = root / 'output'
     output_dir.mkdir(exist_ok=True)
     output_file = output_dir / 'message.txt'
