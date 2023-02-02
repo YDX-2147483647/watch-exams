@@ -4,15 +4,15 @@ from difflib import ndiff
 from pathlib import Path
 
 from dingding import DingDing
-from pandas import read_csv
+from polars import read_csv, Utf8
 
 
 def load_watches(filepath: Path) -> list[str]:
     watches = read_csv(
         filepath,
         encoding="utf-8",
-        comment="#",
-        dtype=str,
+        comment_char="#",
+        dtypes={"姓名": Utf8, "学号": Utf8},
     )
 
     return list(watches["学号"])

@@ -9,14 +9,15 @@ from math import isnan
 from typing import TYPE_CHECKING
 from urllib.parse import urljoin
 
+import polars as pl
 from bs4 import BeautifulSoup
-from pandas import read_excel
+from polars import Utf8, read_excel
 from requests import get as fetch
 
 if TYPE_CHECKING:
     from typing import Final
 
-    from pandas import DataFrame, Series
+    from polars import DataFrame
 
 
 notification_url: Final = (
@@ -59,10 +60,13 @@ def get_watched_plans(url: str, watches: list[str], **requests_args) -> DataFram
 
     res = fetch(url, **requests_args)
     res.raise_for_status()
-    data = read_excel(BytesIO(res.content), dtype={"学号": str})
-    # 若直接`read_excel(url)`，无法设置代理
 
-    return data[data["学号"].isin(watches)]
+    return read_excel(
+        BytesIO(res.content),
+        sheet_id=1,
+        sheet_name=None,
+        read_csv_options=dict(dtypes={"学号": Utf8}),
+    ).filter(pl.col("学号").is_in(watches))
 
 
 def filter_out_personal_info(plans: DataFrame) -> DataFrame:
@@ -73,19 +77,16 @@ def filter_out_personal_info(plans: DataFrame) -> DataFrame:
     columns: Final = ["课程号", "课程名", "考试时间", "其他说明", "通知单类型"]
     assert columns[-1] == "通知单类型"
 
-    safe_plans = plans[columns]
-    unique_plans = safe_plans.drop_duplicates()
-
-    merged_plans = (
-        unique_plans.groupby(columns[:-1], dropna=False)
-        .aggregate({"通知单类型": "／".join})
-        .reset_index()
+    return (
+        plans.select(pl.col(columns))
+        .unique()
+        .groupby(columns[:-1])
+        .agg(pl.col("通知单类型"))
+        .sort("考试时间")
     )
 
-    return merged_plans.sort_values(by="考试时间", axis="index")
 
-
-def one_plan_to_markdown(plan: Series) -> str:
+def one_plan_to_markdown(plan: dict) -> str:
     raw_time: str = plan["考试时间"]
     is_completed = (
         datetime.fromisoformat(raw_time.split()[0]).date() < datetime.now().date()
@@ -97,8 +98,8 @@ def one_plan_to_markdown(plan: Series) -> str:
     else:
         title = f"**{title}**"
 
-    if plan["通知单类型"] != "正常":
-        title += f"（{plan['通知单类型']}）"
+    if plan["通知单类型"] != ["正常"]:
+        title += f"（{'／'.join(plan['通知单类型'])}）"
 
     if is_completed:
         return f"- {title}"
@@ -116,7 +117,7 @@ def one_plan_to_markdown(plan: Series) -> str:
 
         return "\n\n".join(
             filter(
-                lambda x: bool(x),
+                bool,
                 [
                     f"- {title}",
                     f"  {time}",
@@ -128,11 +129,11 @@ def one_plan_to_markdown(plan: Series) -> str:
 
 
 def all_plans_to_markdown(plans: DataFrame) -> str:
-    if plans.empty:
+    if plans.is_empty():
         return ""
 
-    messages = plans.apply(one_plan_to_markdown, axis="columns")
-    return "\n\n".join(messages)  # type: ignore
+    messages = plans.select(pl.struct(pl.all()).apply(one_plan_to_markdown)).to_series()
+    return "\n\n".join(messages)
 
 
 def fetch_notification_markdown(watches: list[str], **requests_args) -> str:
