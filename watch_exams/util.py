@@ -2,7 +2,6 @@ import logging
 import re
 from difflib import ndiff
 from pathlib import Path
-from typing import Final
 
 from dingding import DingDing
 from pandas import read_csv

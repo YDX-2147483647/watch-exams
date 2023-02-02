@@ -1,23 +1,29 @@
-from math import isnan
 import logging
 import re
-from io import BytesIO
-from urllib.parse import urljoin
+from dataclasses import dataclass
 from datetime import datetime
+from io import BytesIO
+from math import isnan
+from typing import TYPE_CHECKING
+from urllib.parse import urljoin
 
-from requests import get as fetch
 from bs4 import BeautifulSoup
 from pandas import read_excel
+from requests import get as fetch
 
-from typing import Final, TypedDict
-from pandas import DataFrame, Series
+if TYPE_CHECKING:
+    from typing import Final
+
+    from pandas import DataFrame, Series
+
 
 notification_url: Final = (
     r"https://jxzx.bit.edu.cn/tzgg/9791433d77d044b6bed2e07c50b02319.htm"
 )
 
 
-class PlanInfo(TypedDict):
+@dataclass
+class PlanInfo:
     url: str
     note: str
     filename: str
@@ -129,12 +135,12 @@ def all_plans_to_markdown(plans: DataFrame) -> str:
 
 def fetch_notification_markdown(watches: list[str], **requests_args) -> str:
     info = get_plan_info(**requests_args)
-    plans = get_watched_plans(info["url"], watches, **requests_args)
+    plans = get_watched_plans(info.url, watches, **requests_args)
     plans = filter_out_personal_info(plans)
 
     return "\n\n".join(
         [
-            f'（测试）我们班相关的“学生考试安排”如下。（{info["note"]}）',
+            f"（测试）我们班相关的“学生考试安排”如下。（{info.note}）",
             all_plans_to_markdown(plans),
             f"详情见[教学中心通知]({notification_url})。",
         ]
