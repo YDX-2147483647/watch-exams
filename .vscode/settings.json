@@ -5,5 +5,7 @@
         "isin",
         "lxml"
     ],
-    "python.analysis.typeCheckingMode": "basic"
+    "python.analysis.typeCheckingMode": "basic",
+    "python.linting.mypyEnabled": true,
+    "python.formatting.provider": "black"
 }

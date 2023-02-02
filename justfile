@@ -23,3 +23,9 @@ undo:
 # See what has changed in VS Code
 diff:
 	code --diff output/message-old.txt output/message.txt
+
+# Check errors for the local package
+check:
+	-{{ python }} -m black .
+	-{{ python }} -m ruff .
+	-{{ python }} -m mypy .

@@ -84,8 +84,6 @@ def ding(markdown: str, secrets_file: Path) -> None:
     """向钉钉发送 Markdown"""
 
     with open(secrets_file, "r", encoding="utf-8") as f:
-        access_token: Final
-        secret: Final
         access_token, secret = [
             line.strip() for line in f.readlines() if not line.startswith("#")
         ]

@@ -30,7 +30,7 @@ def get_plan_info(**requests_args) -> PlanInfo:
 
     soup = BeautifulSoup(req.text, features="lxml")
     plan_element = soup.select(".pageArticle > .Annex > ul > li > a:not([download])")[1]
-    url = urljoin(notification_url, plan_element.get("href"))  # type: ignore
+    url: str = urljoin(notification_url, plan_element.get("href"))  # type: ignore
 
     filename = plan_element.get_text()
     assert "学生" in filename and "考试安排" in filename
@@ -45,7 +45,8 @@ def get_plan_info(**requests_args) -> PlanInfo:
 def get_watched_plans(url: str, watches: list[str], **requests_args) -> DataFrame:
     """
     Returns:
-        The data with Index(['学号', '姓名', '课程号', '课程名', '考试序号', '考试时间', '其他说明', '通知单类型']).
+        The data with the following indices.
+            "学号", "姓名", "课程号", "课程名", "考试序号", "考试时间", "其他说明", "通知单类型"
     """
 
     res = fetch(url, **requests_args)

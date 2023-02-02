@@ -72,7 +72,7 @@ if __name__ == "__main__":
     )
 
     if output_file.exists():
-        old_message = output_file.read_text(encoding="utf-8")
+        old_message: str | None = output_file.read_text(encoding="utf-8")
     else:
         old_message = None
 
