@@ -17,7 +17,7 @@ openpyxl = "^3.0.10"
 
 
 [tool.poetry.group.dev.dependencies]
-autopep8 = "^2.0.1"
+black = "^23.1.0"
 
 [build-system]
 requires = ["poetry-core"]
