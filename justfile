@@ -1,8 +1,10 @@
-set dotenv-load
-set windows-shell := ["pwsh", "-NoLogo", "-Command"]
+set dotenv-load := true
+
+# `just` works with the sh provided by Git for Windows, GitHub Desktop, or Cygwin.
+# If you'd rather use PowerShell (which is slower), uncomment the following line.
+# set windows-shell := ["pwsh", "-NoLogo", "-Command"]
 
 python := env_var_or_default('PYTHON', 'poetry run python')
-
 
 # List available recipes
 @default:
@@ -10,22 +12,23 @@ python := env_var_or_default('PYTHON', 'poetry run python')
 
 # Update the message
 update *options:
-	{{ python }} -m watch_exams --verbose {{ options }}
+    {{ python }} -m watch_exams --verbose {{ options }}
 
 # Update the message and send to Ding
 update-ding *options:
-	{{ python }} -m watch_exams --verbose --ding {{ options }}
+    {{ python }} -m watch_exams --verbose --ding {{ options }}
 
 # Reset “message.txt” to the old
 undo:
-	cp output/message-old.txt output/message.txt
+    cp output/message-old.txt output/message.txt
 
 # See what has changed in VS Code
 diff:
-	code --diff output/message-old.txt output/message.txt
+    code --diff output/message-old.txt output/message.txt
 
-# Check errors for the local package
-check:
-	-{{ python }} -m black .
-	-{{ python }} -m ruff .
-	-{{ python }} -m mypy .
+# Format and Lint
+fmt:
+    -{{ python }} -m black .
+    -just --fmt --unstable
+    -{{ python }} -m ruff .
+    -{{ python }} -m mypy .

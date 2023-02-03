@@ -6,11 +6,13 @@ from typing import Final
 # spell-checker: disable-next-line
 from urllib.request import getproxies as get_proxies
 
-from .fetch_notification import fetch_notification_markdown
-from .util import compare, ding, has_changed, load_watches
+from .display import to_markdown
+from .fetch import fetch_plans
+from .save import Saver
+from .util import ding, load_watches
 
 
-def prepare_parser() -> ArgumentParser:
+def build_parser() -> ArgumentParser:
     parser = ArgumentParser(description="Watch exam plans.")
     parser.add_argument(
         "--ding",
@@ -36,63 +38,42 @@ def get_fixed_proxies() -> dict[str, str]:
     return proxies
 
 
-def update_file(message: str, output_file: Path, old_output_file: Path) -> None:
-    """备份并更新 message.txt"""
-
-    # Backup the old
-    old_output_file.unlink(missing_ok=True)
-    try:
-        output_file.rename(old_output_file)
-    except FileNotFoundError:
-        pass
-
-    # Save the new
-    output_file.write_text(message, encoding="utf-8")
-    logging.info(f"The message was saved to {output_file}.")
-
-
-if __name__ == "__main__":
-    parser = prepare_parser()
-    args = parser.parse_args()
+def main() -> None:
+    args = build_parser().parse_args()
 
     if args.verbose:
-        logging.basicConfig(level=logging.INFO)
+        logging.basicConfig(
+            level=logging.INFO,
+            format="%(asctime)s [%(levelname)s] %(message)s",
+        )
 
     # 1. Prepare paths
 
     root: Final = Path.cwd()
-    output_dir = root / "output"
-    output_dir.mkdir(exist_ok=True)
-    output_file = output_dir / "message.txt"
+    saver = Saver(output_dir=root / "output")
 
     # 2. Get messages
 
-    message = fetch_notification_markdown(
-        watches=load_watches(root / "config/watches.csv"), proxies=get_fixed_proxies()
+    plans, note = fetch_plans(
+        watches=load_watches(root / "config/watches.csv"),
+        proxies=get_fixed_proxies(),
     )
-
-    if output_file.exists():
-        old_message: str | None = output_file.read_text(encoding="utf-8")
-    else:
-        old_message = None
+    saver.message = to_markdown(plans, note)
 
     # 3. Update
 
-    should_update: Final = args.force or has_changed(message, old_message)
-
-    if not should_update:
+    if not args.force and not saver.changed():
         print("Nothing updated.")
     else:
-        print(message)
+        print(saver.message)
 
         if args.ding:
             ding(
-                compare(message, old_message),
+                saver.diff(),
                 secrets_file=root / "config/ding_secrets.txt",
             )
 
-        update_file(
-            message,
-            output_file=output_file,
-            old_output_file=output_file.with_stem("message-old"),
-        )
+        saver.save()
+
+
+main()
