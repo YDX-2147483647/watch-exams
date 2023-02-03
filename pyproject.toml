@@ -6,6 +6,9 @@ authors = ["Y.D.X. <73375426+YDX-2147483647@users.noreply.github.com>"]
 readme = "ReadMe.md"
 packages = [{include = "watch_exams"}]
 
+[tool.poetry.scripts]
+watch_exams = 'watch_exams.__main__:main'
+
 [tool.poetry.dependencies]
 python = "^3.10"
 beautifulsoup4 = "^4.11.1"

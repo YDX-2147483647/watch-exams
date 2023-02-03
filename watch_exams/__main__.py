@@ -76,4 +76,5 @@ def main() -> None:
         saver.save()
 
 
-main()
+if __name__ == "__main__":
+    main()
