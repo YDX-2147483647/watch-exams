@@ -25,15 +25,15 @@ def _one_plan_to_markdown(plan: dict) -> str:
     else:
         title = f"**{title}**"
 
-    if plan["通知单类型"] != ["正常"]:
-        title += f"（{'／'.join(plan['通知单类型'])}）"
+    if plan["考试序号"] != ["正常"]:
+        title += f"（{'／'.join(plan['考试序号'])}）"
 
     if is_completed:
         return f"- {title}"
     else:
         time: str = raw_time.replace("(", "（").replace(")", "）")
 
-        raw_remark = plan["其他说明"]
+        raw_remark = plan["排考说明"]
         remark: list[str] = []
         if type(raw_remark) == str:
             remark = [f"> {line}" for line in raw_remark.split("\n")]

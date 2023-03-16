@@ -6,7 +6,7 @@ from dingding import DingDing
 from polars import Utf8, read_csv
 
 notification_url: Final = (
-    r"https://jxzx.bit.edu.cn/tzgg/9791433d77d044b6bed2e07c50b02319.htm"
+    r"https://jxzx.bit.edu.cn/tzgg/acf3d085e79344f8aa957058692d11f7.htm"
 )
 
 
