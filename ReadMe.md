@@ -18,11 +18,11 @@ INFO:root:The message was saved to D:\DevelopProjects\Archive\2036\watch\output\
 
 ```shell
 # ↓ 查看更多信息
-> python main.py --help
+> python -m watch_exams --help
 > just --list
 ```
 
-## 设置（`config/`）
+## ⚙️设置（`config/`）
 
 - `watches.csv`
 
@@ -61,7 +61,7 @@ INFO:root:The message was saved to D:\DevelopProjects\Archive\2036\watch\output\
   # 这儿也可有注释
   ```
 
-## 输出（`output/`）
+## 📋输出（`output/`）
 
 - `message.txt`
 
@@ -70,3 +70,12 @@ INFO:root:The message was saved to D:\DevelopProjects\Archive\2036\watch\output\
 - `message-old.txt`
   
   更改`message.txt`时进行的备份。
+
+## 🛠️开发
+
+```shell
+$ poetry install
+$ poetry run watch_exams --help
+```
+
+运行并不一定需要 [Poetry](https://python-poetry.org/) 或 [just](https://just.systems/)。
