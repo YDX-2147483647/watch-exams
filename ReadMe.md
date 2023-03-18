@@ -24,11 +24,20 @@ INFO:root:The message was saved to D:\DevelopProjects\Archive\2036\watch\output\
 
 ## 设置（`config/`）
 
-- `watches.txt`
+- `watches.csv`
 
   必需有。
 
-  关心的同学的名字，每行一个。`#`打头的行算注释。
+  关心的同学的姓名、学号，每行一个。`#`打头的行算注释。
+
+  示例如下。
+
+  ```csv
+  姓名,学号
+  李白,1107010228
+  # 杜甫很遗憾成为了注释
+  苏轼,1110370108
+  ```
 
 - `ding_secrets.txt`
 
@@ -43,6 +52,14 @@ INFO:root:The message was saved to D:\DevelopProjects\Archive\2036\watch\output\
   - 第二行
 
     加的签：机器人设置 → 安全设置 → 加签，`SEC`打头。
+  
+  示例如下。
+
+  ```
+  08cdd541575a6b15b68faf70e1b2c5160a744c7f64771df301afe5c1ba85e58c
+  SEC2deaf1250fc694382d1294a4e74974d9f3b9868e6d25f6a775e6a33cbf931510
+  # 这儿也可有注释
+  ```
 
 ## 输出（`output/`）
 
