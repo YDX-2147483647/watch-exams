@@ -52,7 +52,7 @@ def _get_watched_plans(url: str, watches: list[str], **requests_args) -> DataFra
     """
     Returns:
         The data with the following indices.
-            "学号", "姓名", "课程号", "课程名", "考试批次", "考试时间", "其他说明"
+            "学号", "姓名", "课程号", "课程名", "通知单类型", "考试时间", "其他说明"
     """
 
     res = fetch(url, **requests_args)
@@ -73,14 +73,14 @@ def _filter_out_personal_info(plans: DataFrame) -> DataFrame:
     See `get_watched_plans`.
     """
 
-    columns: Final = ["课程号", "课程名", "考试时间", "其他说明", "考试批次"]
-    assert columns[-1] == "考试批次"
+    columns: Final = ["课程号", "课程名", "考试时间", "其他说明", "通知单类型"]
+    assert columns[-1] == "通知单类型"
 
     return (
         plans.select(pl.col(columns))
         .unique()
         .groupby(columns[:-1])
-        .agg(pl.col("考试批次"))
+        .agg(pl.col("通知单类型"))
         .sort("考试时间")
     )
 

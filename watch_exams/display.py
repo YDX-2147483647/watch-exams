@@ -25,8 +25,8 @@ def _one_plan_to_markdown(plan: dict) -> str:
     else:
         title = f"**{title}**"
 
-    if plan["考试批次"] != ["期末考试"]:
-        title += f"（{'／'.join(plan['考试批次'])}）"
+    if plan["通知单类型"] != ["正常"]:
+        title += f"（{'／'.join(plan['通知单类型'])}）"
 
     if is_completed:
         return f"- {title}"
