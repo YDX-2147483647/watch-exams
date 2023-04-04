@@ -81,7 +81,7 @@ def _filter_out_personal_info(plans: DataFrame) -> DataFrame:
         .unique()
         .groupby(columns[:-1])
         .agg(pl.col("通知单类型"))
-        .sort("考试时间")
+        .sort(["考试时间", "课程名"])
     )
 
 
