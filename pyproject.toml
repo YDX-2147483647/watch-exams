@@ -28,6 +28,13 @@ mypy = "^0.991"
 types-requests = "^2.28.11.8"
 types-beautifulsoup4 = "^4.11.6.5"
 
+
+[[tool.poetry.source]]
+name = "mirrors"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple/"
+default = true
+secondary = false
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
