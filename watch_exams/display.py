@@ -39,6 +39,8 @@ def _one_plan_to_markdown(plan: dict) -> str:
             remark = [f"> {line}" for line in raw_remark.split("\n")]
         elif type(raw_remark) == float and isnan(raw_remark):
             pass
+        elif raw_remark is None:
+            pass
         else:
             logging.error(f"备注无法识别：{raw_remark}。")
 
