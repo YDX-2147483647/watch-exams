@@ -64,7 +64,7 @@ def _get_watched_plans(url: str, watches: list[str], **requests_args) -> DataFra
         BytesIO(res.content),
         sheet_id=1,
         sheet_name=None,
-        read_csv_options=dict(dtypes={"学号": Utf8}),
+        read_csv_options=dict(dtypes={"学号": Utf8, "课程号": Utf8}),
     ).filter(pl.col("学号").is_in(watches))
 
 
