@@ -30,10 +30,13 @@ types-beautifulsoup4 = "^4.11.6.5"
 
 
 [[tool.poetry.source]]
-name = "mirrors"
+name = "tuna"
 url = "https://pypi.tuna.tsinghua.edu.cn/simple/"
-default = true
-secondary = false
+priority = "default"
+
+[[tool.poetry.source]]
+name = "PyPI"
+priority = "primary"
 
 [build-system]
 requires = ["poetry-core"]
