@@ -10,7 +10,7 @@ if TYPE_CHECKING:
     from pathlib import Path
 
 notification_url: Final = (
-    r"https://jxzx.bit.edu.cn/tzgg/acf3d085e79344f8aa957058692d11f7.htm"
+    r"https://jxzx.bit.edu.cn/tzgg/ace12c047f2e4ab7a43d763923ade125.htm"
 )
 
 
