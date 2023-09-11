@@ -28,7 +28,7 @@ diff:
 
 # Format and Lint
 fmt:
-    -{{ python }} -m black .
+    -pre-commit run black --all-files
     -just --fmt --unstable
-    -{{ python }} -m ruff .
+    -pre-commit run ruff --all-files
     -{{ python }} -m mypy .
