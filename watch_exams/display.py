@@ -35,9 +35,9 @@ def _one_plan_to_markdown(plan: dict) -> str:
 
         raw_remark = plan["其他说明"]
         remark: list[str] = []
-        if type(raw_remark) == str:
+        if isinstance(raw_remark, str):
             remark = [f"> {line}" for line in raw_remark.split("\n")]
-        elif type(raw_remark) == float and isnan(raw_remark):
+        elif isinstance(raw_remark, float) and isnan(raw_remark):
             pass
         elif raw_remark is None:
             pass
@@ -50,8 +50,9 @@ def _one_plan_to_markdown(plan: dict) -> str:
                 [
                     f"- {title}",
                     f"  {time}",
-                    "\n>\n".join(remark)
-                    # remark 本应是 list item 的内容，然而钉钉手机端不支持（会导致后续加粗失效），只好去除缩进了。
+                    "\n>\n".join(remark),
+                    # remark 本应是 list item 的内容，
+                    # 然而钉钉手机端不支持（会导致后续加粗失效），只好去除缩进了。
                 ],
             )
         )

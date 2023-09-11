@@ -52,7 +52,7 @@ INFO:root:The message was saved to D:\DevelopProjects\Archive\2036\watch\output\
   - 第二行
 
     加的签：机器人设置 → 安全设置 → 加签，`SEC`打头。
-  
+
   示例如下。
 
   ```
@@ -68,7 +68,7 @@ INFO:root:The message was saved to D:\DevelopProjects\Archive\2036\watch\output\
   上一次的结果，markdown 格式。
 
 - `message-old.txt`
-  
+
   更改`message.txt`时进行的备份。
 
 ## 🛠️开发

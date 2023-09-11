@@ -6,6 +6,7 @@
         "lxml"
     ],
     "python.analysis.typeCheckingMode": "basic",
-    "python.linting.mypyEnabled": true,
-    "python.formatting.provider": "black"
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter"
+    },
 }
