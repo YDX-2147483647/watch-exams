@@ -6,6 +6,7 @@ from math import isnan
 from typing import TYPE_CHECKING
 
 import polars as pl
+from zoneinfo import ZoneInfo
 
 from .util import notification_url
 
@@ -16,7 +17,8 @@ if TYPE_CHECKING:
 def _one_plan_to_markdown(plan: dict) -> str:
     raw_time: str = plan["考试时间"]
     is_completed = (
-        datetime.fromisoformat(raw_time.split()[0]).date() < datetime.now().date()
+        datetime.fromisoformat(raw_time.split()[0]).date()
+        < datetime.now(tz=ZoneInfo("Asia/Shanghai")).date()
     )
 
     title: str = f"{plan['课程名']}"

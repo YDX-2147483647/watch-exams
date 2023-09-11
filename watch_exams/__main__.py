@@ -1,9 +1,9 @@
+from __future__ import annotations
+
 import logging
 from argparse import ArgumentParser
 from pathlib import Path
 from typing import Final
-
-# spell-checker: disable-next-line
 from urllib.request import getproxies as get_proxies
 
 from .display import to_markdown

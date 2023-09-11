@@ -36,12 +36,17 @@ def _get_plan_info(**requests_args) -> _PlanInfo:
 
     soup = BeautifulSoup(res.text, features="lxml")
     plan_element = soup.select(".pageArticle > .Annex > ul > li > a:not([download])")[1]
-    url: str = urljoin(notification_url, plan_element.get("href"))  # type: ignore
+    url: str = urljoin(
+        notification_url,
+        plan_element.get("href"),  # type: ignore `<a>`一般都有`href`
+    )
 
     filename = plan_element.get_text()
     assert "学生" in filename and "考试安排" in filename
 
-    note = re.search(r"(?<=（).+(?=）)", filename).group(0)  # type: ignore
+    match = re.search(r"(?<=（).+(?=）)", filename)
+    assert match is not None, f'无法解析文件名“{filename}”'
+    note = match.group(0)
 
     logging.info(f"Got the URL of “{note}”: {url} .")
 
@@ -64,7 +69,7 @@ def _get_watched_plans(url: str, watches: list[str], **requests_args) -> DataFra
         BytesIO(res.content),
         sheet_id=1,
         sheet_name=None,
-        read_csv_options=dict(dtypes={"学号": Utf8, "课程号": Utf8}),
+        read_csv_options={"dtypes": {"学号": Utf8, "课程号": Utf8}},
     ).filter(pl.col("学号").is_in(watches))
 
 

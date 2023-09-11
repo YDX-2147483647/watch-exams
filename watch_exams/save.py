@@ -83,7 +83,7 @@ class Saver:
                 tail = ""
 
             code = line[:2]
-            line = line[2:t]
+            line = line[2:t]  # noqa: PLW2901 redefined-loop-name
 
             match code:
                 case "  ":

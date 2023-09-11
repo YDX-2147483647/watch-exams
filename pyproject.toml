@@ -17,6 +17,7 @@ requests = "^2.28.1"
 lxml = "^4.9.2"
 polars = "^0.16.1"
 xlsx2csv = "^0.8.1"
+tzdata = "^2023.3"
 
 [tool.poetry.group.dev]
 optional = true
@@ -42,6 +43,33 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.ruff]
 line-length = 88
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # Pyflakes
+    "I",   # isort
+    "N",   # pep8-naming
+    "UP",  # pyupgrade
+    "PL",  # Pylint
+    "ANN", # flake8-annotations
+    "B",   # flake8-bugbear
+    "A",   # flake8-builtins
+    "C4",  # flake8-comprehensions
+    "DTZ", # flake8-datetimez
+    "FA",  # flake8-future-annotations
+    "PYI", # flake8-pyi
+    "TID", # flake8-tidy-imports
+    "TCH", # flake8-type-checking
+    "ARG", # flake8-unused-arguments
+    "PGH", # pygrep-hooks
+    "TRY", # tryceratops
+    "ERA", # eradicate
+]
+ignore = [
+    "ANN002", # missing-type-args
+    "ANN003", # missing-type-kwargs
+    "ANN101", # missing-type-self
+]
 
 [tool.mypy]
 ignore_missing_imports = true
