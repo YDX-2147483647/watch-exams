@@ -45,7 +45,7 @@ def _get_plan_info(**requests_args) -> _PlanInfo:
     assert "学生" in filename and "考试安排" in filename
 
     match = re.search(r"(?<=（).+(?=）)", filename)
-    assert match is not None, f'无法解析文件名“{filename}”'
+    assert match is not None, f"无法解析文件名“{filename}”"
     note = match.group(0)
 
     logging.info(f"Got the URL of “{note}”: {url} .")
