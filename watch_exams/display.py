@@ -71,10 +71,8 @@ def _all_plans_to_markdown(plans: DataFrame) -> str:
 
 
 def to_markdown(plans: DataFrame, note: str) -> str:
-    return "\n\n".join(
-        [
-            f"（测试）我们班相关的“学生考试安排”如下。（{note}）",
-            _all_plans_to_markdown(plans),
-            f"详情见[教学中心通知]({notification_url})。",
-        ]
-    )
+    return "\n\n".join([
+        f"（测试）我们班相关的“学生考试安排”如下。（{note}）",
+        _all_plans_to_markdown(plans),
+        f"详情见[教学中心通知]({notification_url})。",
+    ])
