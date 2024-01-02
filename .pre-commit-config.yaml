@@ -21,6 +21,6 @@ repos:
         args:
           - --preview
   - repo: https://github.com/crate-ci/typos
-    rev: v1.16.25
+    rev: v1.16.26
     hooks:
       - id: typos
